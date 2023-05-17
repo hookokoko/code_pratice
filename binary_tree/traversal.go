@@ -1,6 +1,9 @@
 package binary_tree
 
-import "code_pratice/common"
+import (
+	"code_pratice/common"
+	"container/list"
+)
 
 func RecursiveTraversal(root *common.Node[int]) []int {
 	return nil
@@ -54,6 +57,36 @@ func NonRecursiveTraversal_In(root *common.Node[int]) []int {
 			res = append(res, cur.Data)
 			cur = cur.Right
 		}
+	}
+	return res
+}
+
+// LevelOrder 层次遍历
+func LevelOrder(root *common.Node[int]) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
+	l := list.New()
+	res := make([][]int, 0, 32)
+
+	l.PushBack(root)
+	for l.Len() > 0 {
+		size := l.Len()
+		sub_res := make([]int, 0, 32)
+		for i := 0; i < size; i++ {
+			temp := l.Front()
+			l.Remove(temp)
+			left := temp.Value.(*common.Node[int]).Left
+			right := temp.Value.(*common.Node[int]).Right
+			if left != nil {
+				l.PushBack(left)
+			}
+			if right != nil {
+				l.PushBack(right)
+			}
+			sub_res = append(sub_res, temp.Value.(*common.Node[int]).Data)
+		}
+		res = append(res, sub_res)
 	}
 	return res
 }
