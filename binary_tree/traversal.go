@@ -69,13 +69,16 @@ func LevelOrder(root *common.Node[int]) [][]int {
 	l := list.New()
 	res := make([][]int, 0, 32)
 
+	// 入队
 	l.PushBack(root)
 	for l.Len() > 0 {
 		size := l.Len()
 		sub_res := make([]int, 0, 32)
 		for i := 0; i < size; i++ {
+			// 出队
 			temp := l.Front()
 			l.Remove(temp)
+
 			left := temp.Value.(*common.Node[int]).Left
 			right := temp.Value.(*common.Node[int]).Right
 			if left != nil {
@@ -84,6 +87,7 @@ func LevelOrder(root *common.Node[int]) [][]int {
 			if right != nil {
 				l.PushBack(right)
 			}
+			
 			sub_res = append(sub_res, temp.Value.(*common.Node[int]).Data)
 		}
 		res = append(res, sub_res)
