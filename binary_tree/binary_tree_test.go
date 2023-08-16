@@ -3,6 +3,7 @@ package binary_tree
 import (
 	"code_pratice/common"
 	"fmt"
+	"log"
 	"testing"
 )
 
@@ -16,4 +17,10 @@ func TestInvertTree(t *testing.T) {
 	InvertTree(treeNode1)
 
 	fmt.Println(treeNode1)
+}
+
+func Test_BinaryTreePaths(t *testing.T) {
+	root := common.NewTree([]string{"1", "2", "3", "4", "5", "6", "7"})
+	res := BinaryTreePaths(&root)
+	log.Println(res)
 }
