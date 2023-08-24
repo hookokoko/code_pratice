@@ -60,6 +60,22 @@ func Test_mergeSortedList(t *testing.T) {
 	fmt.Println(printList(l))
 }
 
+func Test_sortList(t *testing.T) {
+	l1 := generateList([]int{3, 3, 8, 5, 4, 1, 9})
+	l := sortList(l1)
+	fmt.Println(printList(l))
+}
+
+func Test_mergeKLists(t *testing.T) {
+	//[1,4,5],[1,3,4],[2,6]
+	l1 := generateList([]int{1, 4, 5})
+	l2 := generateList([]int{1, 3, 4})
+	l3 := generateList([]int{2, 6})
+
+	l := mergeKLists([]*ListNode{l1, l2, l3})
+	fmt.Println(printList(l))
+}
+
 func generateList(arr []int) *ListNode {
 	dummy := &ListNode{}
 	cur := dummy

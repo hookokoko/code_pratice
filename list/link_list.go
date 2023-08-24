@@ -219,3 +219,31 @@ func mergeSortedList1(l1 *ListNode, l2 *ListNode) *ListNode {
 	}
 	return dummy.Next
 }
+
+// 23. 合并k个升序链表
+// 基础就是合并链表
+//  1. 顺序合并，sum+=num这种
+//  2. 两两合并，类似排序链表的归并，但又不完全一样，因为这是有多个链表，不太好分。只能是利用递归了。
+//     递归的思路是：每次分一半，递归的函数签名类似这种：l1 = merge(list, left, right), l2= merge(list, left, right); 然后按照合并两个链表的方式合并l1、l2
+//     但是也可以不用递归，下面写得是个不是递归的方法。
+//  3. 利用k容量大小的优先级队列
+func mergeKLists(lists []*ListNode) *ListNode {
+	length := len(lists)
+	if length == 0 {
+		return nil
+	}
+	nums := length
+	for nums != 1 {
+		idx := 0
+		for i := 0; i < nums; i += 2 {
+			if i+1 == nums {
+				lists[idx] = lists[i]
+			} else {
+				lists[idx] = mergeSortedList1(lists[i], lists[i+1])
+			}
+			idx++
+		}
+		nums = idx
+	}
+	return lists[0]
+}
