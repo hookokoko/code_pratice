@@ -92,3 +92,130 @@ func swapPairs(head *ListNode) *ListNode {
 	}
 	return dummy.Next
 }
+
+// 25. K个一组翻转链表
+// 1. 一个方法就是下面的这种；
+// 2. 还有另一种就是reverse之后返回新的start和end，前提是reverse之前需要断链
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	dummy := &ListNode{Next: head}
+	pre := dummy
+
+	// 思考下为啥start是循环内的局部变量，而end在循环外
+	// 或者说start如果是全局的，会有什么问题? 好像也没什么问题？其实，就是没必要而已
+	end := dummy
+	start := dummy
+
+	// 为啥终止条件是end.Next != nil
+	for end.Next != nil {
+		for i := k; i > 0 && end != nil; i-- {
+			end = end.Next
+		}
+		if end == nil {
+			break
+		}
+
+		start = pre.Next // 问什么这里是for里面的局部变量？
+
+		next := end.Next // 这个很明显，是记录的作用
+
+		end.Next = nil // 逆转前需要断链
+		pre.Next = reverseList(start)
+
+		// 逆转后，将尾巴接上
+		start.Next = next
+
+		// 重新赋值pre和end，这时start是丢弃的
+		pre = start
+		end = pre
+	}
+
+	return dummy.Next
+}
+
+// 148. 排序链表
+// 使用归并排序算法，又分自底向上和自顶向下，这两者时间复杂度不同。
+// 完成这道题的前提是，合并两个排序链表。
+func sortList(head *ListNode) *ListNode {
+	if head == nil {
+		return head
+	}
+	length := 0
+	for node := head; node != nil; node = node.Next {
+		length++
+	}
+	dummyHead := &ListNode{Next: head}
+	for subLength := 1; subLength < length; subLength <<= 1 {
+		prev, cur := dummyHead, dummyHead.Next
+		// 每一轮循环找到两个待归并的链表
+		for cur != nil {
+			// 找第一个链表
+			head1 := cur
+			for i := 1; i < subLength && cur.Next != nil; i++ {
+				cur = cur.Next
+			}
+			// 找第二个链表
+			head2 := cur.Next
+			cur.Next = nil // 需要跟第三个链表断链(如果有)
+			cur = head2    // cur在找第一个和第二个链表时是可以共用的中间变量
+			for i := 1; i < subLength && cur != nil && cur.Next != nil; i++ {
+				cur = cur.Next
+			}
+			// 记录下，第三个链表的头(如果cur不是nil)
+			var next *ListNode
+			if cur != nil {
+				next = cur.Next // 这里记录了
+				cur.Next = nil  // 这里和第二个链表断链
+			}
+			// 一切都是为了合并。。。
+			prev.Next = mergeSortedList1(head1, head2)
+
+			// 注意是for，找到合并后链表的尾节点，为了下一轮合并
+			for prev.Next != nil {
+				prev = prev.Next
+			}
+			// 同时调整cur
+			// cur和prev能共用一个吗？不能因为cur和prev是断开的关系
+			cur = next
+		}
+	}
+	return dummyHead.Next
+}
+
+// 递归合并
+func mergeSortedList(l1 *ListNode, l2 *ListNode) *ListNode {
+	if l1 == nil {
+		return l2
+	}
+	if l2 == nil {
+		return l1
+	}
+	if l1.Val < l2.Val {
+		l1.Next = mergeSortedList(l1.Next, l2)
+		return l1
+	} else {
+		l2.Next = mergeSortedList(l1, l2.Next)
+		return l2
+	}
+}
+
+// 合并非递归
+func mergeSortedList1(l1 *ListNode, l2 *ListNode) *ListNode {
+	dummy := &ListNode{}
+	temp, temp1, temp2 := dummy, l1, l2
+	for temp1 != nil && temp2 != nil {
+		if temp1.Val > temp2.Val {
+			temp.Next = temp2
+			temp2 = temp2.Next
+		} else {
+			temp.Next = temp1
+			temp1 = temp1.Next
+		}
+		temp = temp.Next
+	}
+	if temp1 != nil {
+		temp.Next = temp1
+	} else {
+		temp.Next = temp2
+	}
+	return dummy.Next
+}
