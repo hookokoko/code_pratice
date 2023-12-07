@@ -13,7 +13,7 @@ func RemoveExtraSpace(sb *[]byte) {
 		fast++
 	}
 	// 去除中间部分空格
-	for i := fast; i < len((*sb)); i++ {
+	for i := fast; i < len(*sb); i++ {
 		// 不用从i=1开始, 因为头部的字符已经没了
 		// i和i-1比较是精髓
 		if i > 1 && (*sb)[i] == (*sb)[i-1] && (*sb)[i] == '_' {
@@ -34,8 +34,8 @@ func RemoveExtraSpace(sb *[]byte) {
 
 func removeExtraSpaceBak(sb *[]byte) {
 	slow := 0
-
-	for fast := 0; fast < len((*sb)); fast++ {
+	//__bcc___d_ef__ → bcc_d_ef
+	for fast := 0; fast < len(*sb); fast++ {
 		if (*sb)[fast] == '_' {
 			continue
 		}
