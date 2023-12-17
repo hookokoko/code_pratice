@@ -1,8 +1,9 @@
-package hot100
+package jiqiao
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // 1, 2, 1, 0, 0, 1, 2
@@ -28,11 +29,12 @@ func sortColors(nums []int) {
 			swap(nums, idx, p2)
 			p2--
 			// 这里不需要idx--, 为什么要这样？
-			// nums[idx]=0：此时将其与位置 p0 进行互换（记住 p0 为下一个待填入 0 的位置，同时 [p0,idx−1] 为 1 的区间），
-			//		本质是将 nums[idx]nums[idx]nums[idx] 的 0 和 nums[p0] 的 1 进行互换，因此互换后将 l 和 idx 进行右移；
-			// nums[idx]=1 nums[idx] = 1 nums[idx]=1：
+			// nums[idx]=0：
+			//		此时将其与位置 p0 进行互换（记住 p0 为下一个待填入 0 的位置，同时 [p0,idx−1] 为 1 的区间），
+			//		本质是将 nums[idx] 的 0 和 nums[p0] 的 1 进行互换，因此互换后将 l 和 idx 进行右移；
+			// nums[idx]=1：
 			//		由于 [p0,idx−1] 本身就是 1 的区间，直接将 idx 进行右移即可；
-			// nums[idx]=2 nums[idx] = 2 nums[idx]=2：
+			// nums[idx]=2：
 			//		此时将其与位置 p2 进行互换（p2 为下一个待填入 2 的位置，但 [idx,p2] 为未处理区间），
 			//		也就是我们互换后，只能明确换到位置 nums[p2] 的位置为 2，可以对 p2 进行左移，
 			//		但不确定新 nums[idx] 为何值，因此保持 idx 不变再入循环判断。
