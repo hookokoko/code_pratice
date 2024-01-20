@@ -7,6 +7,7 @@ type ListNode struct {
 
 func reverseList(head *ListNode) *ListNode {
 	// 坑：想一想这么赋值会有什么问题？最后一位是1，1会指向2，2又指向1，死循环了。
+	// 具体来说，因为cur是head.Next, 在for循环里面第一轮：cur.Next = pre 等价 head.Next = head, 死链了
 	//pre := head
 	//cur := head.Next
 
