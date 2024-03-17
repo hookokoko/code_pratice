@@ -1,8 +1,9 @@
-package sub_array
+package sub_string
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var q []int

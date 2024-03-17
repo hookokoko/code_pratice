@@ -1,9 +1,10 @@
-package sub_array
+package sub_string
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func subarraySum(nums []int, k int) int {

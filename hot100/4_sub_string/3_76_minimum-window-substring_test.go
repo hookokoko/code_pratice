@@ -1,4 +1,4 @@
-package sub_array
+package sub_string
 
 import (
 	"math"
